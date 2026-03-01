@@ -1,52 +1,45 @@
-%! Authors = Brian Salchert, Abhijit Goda
-%! Date = 2/25/2026
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
 
-% Preamble
-\documentclass[11pt]{article}
 
-% Essential packages
-\usepackage[margin=1in]{geometry}  % Set page margins
-\usepackage{amsmath, amssymb}      % Math symbols and environments
-\usepackage{enumitem}              % Better list formatting
-\usepackage{graphicx}              % Include images if needed
-\usepackage{times}                 % Times font for text and math
-\usepackage{enumerate}
-\usepackage{float}
-\usepackage{listings}
-\usepackage{xcolor}
 
-% Settings for equation formatting
-\lstset{
-  language=Python,
-  basicstyle=\fontfamily{cmtt}\selectfont\small,
-  keywordstyle=\color{purple},
-  stringstyle=\color{red},
-  commentstyle=\color{green!50!black},
-  numbers=none,
-  frame=single,
-  breaklines=true,
-  showstringspaces=false,
-  columns=fullflexible,
-  keepspaces=true,
-  float=H
-}
+\title{Title of Your Project}
 
-% argmax operator
-\DeclareMathOperator*{\argmax}{arg\,max}
+\author{Abhijit Goda, Brian Salchert}
 
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{1em}
+\date{}
 
 \begin{document}
-  \begin{center}
-    {\Large\bfseries Machine Learning (CS6140)} \\[0.5em]
-    {\Large\bfseries Project Proposal} \\[1em]
-    Abhijit Goda, Brian Salchert \\
-    \today
-  \end{center}
 
-  \vspace{1em}
+\maketitle
 
-  % Abstract
-  \section*{Abstract}
+\abstract
+Please provide a brief abstract of your project.
+
+\section{Introduction}
+Please describe the problem you are planning to address. Be precise in defining the problem. Describe why the problem is important, what are the challenges to address, and in what applications it will be useful.
+
+\section{Proposed Project}
+Please describe the problem in more details and discuss whether you will use classification or regression to address it. Describe dataset(s) that you plan to perform experiments on. Be precise in describing the information about the datasets: how many samples, how many classes, if feature vectors of samples are already available or you plan to extract feature (if so, how), whether other preprocessing is needed. 
+
+Please note that your submission must be at most 2 pages long, excluding references and figures.
+
+\section{Model Selection}
+\begin{itemize}
+  \item Logistic Regressor: Baseline Classification Model
+  \item CNN: Standard for classification of image / pixel array data
+  \begin{itemize}
+    \item Can try variations of CNNs or modifying number of kernels, more/fewer layers, etc.
+    \item Complexity analysis?
+  \end{itemize}
+  \item SVM: One-versus-Rest (OvR) for 31 classes; take argmax of confidence scores
+  \begin{itemize}
+    \item Calculate mean, median, max, min, std-dev for each image patch
+    \item training labels $\rightarrow$ 1-D array of class labels
+  \end{itemize}
+  \item Naive Bayes Classifier
+  \item Random Forest, Bagging Classifier, Gradient Boosting
+\end{itemize}
+
 \end{document}
