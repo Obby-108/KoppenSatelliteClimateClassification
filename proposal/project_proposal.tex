@@ -2,7 +2,12 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{hyperref}
 \usepackage{indentfirst}
+\usepackage[style=authoryear, backend=biber]{biblatex}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[font=small,labelfont=bf]{caption}
 
+\addbibresource{references.bib}
 
 \title{Köppen-Geiger Sentinel-2 Satellite Climate Classification}
 
@@ -15,9 +20,18 @@
 \maketitle
 
 \abstract
-Please provide a brief abstract of your project.
+
+Anthropogenic climate change poses serious risks for both human populations and natural ecosystems.
+As changes in temperature (and by extension changes in weather and vegetation) continue to accelerate, there is an increasing need for reliable methods of tracking and quantifying changes to climates over time.
+This project explores the use of multi-class classification models to assign one of thirty Köppen-Geiger climates to each area of the globe.
+The use of high-resolution Sentinel-2 spectral data captures key environmental features, even in remote locations where collection of empirical data for classification is challenging or impossible.
+We apply and evaluate several architectures, such as Convolutional Neural Networks (CNNs), One-versus-Rest Support Vector Machines (OvR SVMs), and ensemble methods, including Random Forests and Gradient Boosting.
+These architectures provide the ability to capture both local features on climate boundaries and larger global features necessary for accurate classification.
+In conducting a meticulous analysis and comparison of these models, this project aims to provide tools for generating high quality insights for quantifying the rate of climate change.
+These findings provide the foundation for assessing natural disaster risk, informing urban planning decisions, improving agricultural yields, and more.
 
 \section{Introduction}
+\label{sec:introduction}
 
 \indent We plan to address the issue of climate classification in the context of the Köppen-Geiger classification schema. This schema is key to identifying the weather conditions of locations all around the world and for meteorological insights, using robust empirical methods to assign one out of thirty climates to every location across the globe. However, there tend to be lots of difficulties in doing so especially in regions where data is inaccessible, like regions in the middle of the Sahara where data collection stations are sparse, or in dense tropical rainforests and developing nations, where maintaining such infrastructure is not feasible.
 
@@ -26,28 +40,31 @@ Rather, we extend the original motivation Wladimir Köppen had in developing his
 Historically, updating global maps based on Köppen's schema has relied on interpolation, such as that of Kriging, between unevenly distributed ground weather stations. This skips over micro-climates in between and fails to capture differences in between climate boundaries. Rather, we propose the use of Sentinel-2 spectral data that comes in high resolution (10m to 60m per pixel), immense quantities, and with bands like Red Edge and Short-Wave Infrared (SWIR) that are sensitive to relevant land qualities, like vegetation health. By training a model to associate spectral bands directly to Köppen-Geiger classes, we can create a much more granular, malleable climate map offering high-resolution insights for climate change, agriculture, and urban planning.
 
 \section{Proposed Project}
+\label{sec:proposed-project}
 
 \indent Our specific problem context is figuring out how to transform multi-spectral data from the Sentinel-2  satellite into one of 30 Köppen-Geiger classes. The dataset is synthesized in multiple steps from multiple sources. First, using the high-resolution Köppen-Geiger GeoTIFF map uploaded to the Google Earth Engine Console, we randomly sampled 2,000 coordinates for each of the 30 climate classes from across the world, ensuring as little bias as possible across class samples, for a total of 60,000 coordinates. These were saved as integers (for the climate classification) and latitude-longitude pairs in the GeoJSON string format. Next, using the coordinates, we sampled 129 x 129 pixel patches of land centered about these coordinates, ensuring no overlap between close-by coordinates, and collected the 12 spectral bands, or in other words, reflection intensity of a satellite light wavelength (like Red Edge or Blue Edge), corresponding to each of the pixels in this patch. In the end, this yielded 60,000 129 x 129 x 12 tensors, where each vertical 129 x 129 x 1 layer corresponded to a 129 x 129 collection of wavelength intensities for a single spectral band, all in the context of some 1.29 km patch of land somewhere in the world.
+Extracting and plotting the three bands of visible light wavelengths for a particular sample from the data yields the plot in Figure 1 below.
 
-We then plan on using our models, such as CNNs and SVMs, to learn the patterns between spectral bands and climate classes, applying case-by-case model preprocessing to ensure the data is understandable to each model. For example, SVM cannot analyze data that is not flattened, so we might apply feature extraction by calculating average wavelength intensity for a given spectral band, for example.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.45\textwidth]{sample}
+  \caption{True Color Composite (RGB) plot for a single input sample.}
+  \label{fig:sample-plot}
+\end{figure}
 
-Please note that your submission must be at most 2 pages long, excluding references and figures.
+We then plan on using our models, such as CNNs and SVMs, to learn the patterns between spectral bands and climate classes, applying case-by-case model preprocessing to ensure the data is understandable to each model. For example, SVM cannot analyze data that is not flattened, so we might apply feature extraction by calculating average wavelength intensity for a given spectral band.
 
 \section{Model Selection}
-\begin{itemize}
-  \item Logistic Regressor: Baseline Classification Model
-  \item CNN: Standard for classification of image / pixel array data
-  \begin{itemize}
-    \item Can try variations of CNNs or modifying number of kernels, more/fewer layers, etc.
-    \item Complexity analysis?
-  \end{itemize}
-  \item SVM: One-versus-Rest (OvR) for 31 classes; take argmax of confidence scores
-  \begin{itemize}
-    \item Calculate mean, median, max, min, std-dev for each image patch
-    \item training labels $\rightarrow$ 1-D array of class labels
-  \end{itemize}
-  \item Naive Bayes Classifier
-  \item Random Forest, Bagging Classifier, Gradient Boosting
-\end{itemize}
+\label{sec:model-selection}
+
+\indent We select several architectures to implement machine learning models that will classify climate zones.
+We will implement a basic logistic regression for multi-class classification, as well as an SVM OvR classifier to provide a baseline for comparison against more complex deep neural networks (DNNs).
+CNNs provide the ability to perform automatic extraction of both low-level and high level features in the data and historically perform well on image data such as that used in this project.
+We will also explore several ways of tuning the CNN, such as modifying the number of kernels or layers.
+Lastly, we will integrate several ensemble methods such as random forests (RF) and gradient boosted classifiers (GBC).
+As noted by \textcite{ensemble-climate-model}, these ensemble methods tend to perform well in this problem domain when applied to high-dimensional, non-linear data such as satellite imagery.
+This collection of architectures will provide a comprehensive basis for comparing model performance and selecting the model that best predicts climate labels from the input data.
+
+\printbibliography
 
 \end{document}
