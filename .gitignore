@@ -1,3 +1,6 @@
 # PyCharm
 .idea
 out
+
+# Saved model parameters
+model/models
