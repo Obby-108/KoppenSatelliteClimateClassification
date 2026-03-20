@@ -1,5 +1,6 @@
 import multiprocessing
 
+import numpy as np
 import tensorflow as tf
 
 def _parse_function(example_proto):
@@ -30,7 +31,7 @@ def _parse_function(example_proto):
     return full_tensor, label
 
 
-def load_shards(filenames, batch_size=512, stats=None, is_training=True):
+def load_shards(filenames, batch_size=512, stats=None, is_training=True, is_svm=False):
     cores = multiprocessing.cpu_count()
     dataset = tf.data.Dataset.from_tensor_slices(filenames)
 
@@ -61,6 +62,10 @@ def load_shards(filenames, batch_size=512, stats=None, is_training=True):
 
         dataset = dataset.map(normalize_fn, num_parallel_calls=cores)
 
+    # Statistical reduction for svms
+    if is_svm:
+        dataset = dataset.map(calculate_spatial_stats, num_parallel_calls=cores)
+
     # Shuffle for training data
     if is_training:
         dataset = dataset.shuffle(buffer_size=1000)
@@ -69,3 +74,41 @@ def load_shards(filenames, batch_size=512, stats=None, is_training=True):
     dataset = dataset.prefetch(buffer_size=tf.data.AUTOTUNE)
 
     return dataset
+
+def calculate_spatial_stats(image, label):
+    flat_pixels = tf.reshape(image, [-1, 12])
+
+    sorted_pixels = tf.sort(flat_pixels, axis=0)
+    num_pixels = tf.cast(tf.shape(sorted_pixels)[0], tf.float32)
+
+    idx_q1 = tf.cast(num_pixels * 0.25, tf.int32)
+    idx_med = tf.cast(num_pixels * 0.5, tf.int32)
+    idx_q3 = tf.cast(num_pixels * 0.75, tf.int32)
+
+    mean = tf.reduce_mean(flat_pixels, axis=0)
+    q1 = tf.gather(sorted_pixels, idx_q1)
+    median = tf.gather(sorted_pixels, idx_med)
+    q3 = tf.gather(sorted_pixels, idx_q3)
+    maximum = tf.reduce_max(flat_pixels, axis=0)
+
+    # Stack stats into (5, 12) vector and flatten to (60)
+    stats_vector = tf.stack([mean, q1, median, q3, maximum], axis=0)
+    flat_features = tf.reshape(stats_vector, [-1])
+
+    return flat_features, label
+
+def get_svm_data(dataset):
+    """
+    Converts the TF dataset directly into NumPy arrays for scikit-learn.
+    """
+    X_list = []
+    y_list = []
+
+    for features, labels in dataset:
+        X_list.append(features.numpy())
+        y_list.append(labels.numpy())
+
+    X = np.concatenate(X_list, axis=0)
+    y = np.concatenate(y_list, axis=0)
+
+    return X, y
