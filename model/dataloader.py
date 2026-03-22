@@ -31,7 +31,7 @@ def _parse_function(example_proto):
     return full_tensor, label
 
 
-def load_shards(filenames, batch_size=512, stats=None, is_training=True, is_svm=False):
+def load_shards(filenames, batch_size=512, is_training=True, is_svm=False):
     cores = multiprocessing.cpu_count()
     dataset = tf.data.Dataset.from_tensor_slices(filenames)
 
@@ -44,23 +44,6 @@ def load_shards(filenames, batch_size=512, stats=None, is_training=True, is_svm=
     )
 
     dataset = dataset.map(_parse_function, num_parallel_calls=cores)
-
-    if stats is not None:
-        m_list, s_list = stats
-
-        # We reshape to (1, 1, 12) so they broadcast correctly over (129, 129, 12)
-        means_tensor = tf.constant(m_list, dtype=tf.float32)
-        means_tensor = tf.reshape(means_tensor, [1, 1, 12])
-
-        stds_tensor = tf.constant(s_list, dtype=tf.float32)
-        stds_tensor = tf.reshape(stds_tensor, [1, 1, 12])
-
-        def normalize_fn(image, label):
-            image = tf.cast(image, tf.float32)
-            image = (image - means_tensor) / (stds_tensor + 1e-7)
-            return image, label
-
-        dataset = dataset.map(normalize_fn, num_parallel_calls=cores)
 
     # Statistical reduction for svms
     if is_svm:
