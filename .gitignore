@@ -4,3 +4,6 @@ out
 
 # Saved model parameters
 model/models
+
+# Reports and training logs
+model/reports
