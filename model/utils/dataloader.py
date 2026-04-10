@@ -31,7 +31,7 @@ def _parse_function(example_proto):
     return full_tensor, label
 
 
-def load_shards(filenames, batch_size=512, is_training=True, is_svm=False):
+def load_shards(filenames, batch_size=64, is_training=True, is_svm=False):
     cores = multiprocessing.cpu_count()
     dataset = tf.data.Dataset.from_tensor_slices(filenames)
 

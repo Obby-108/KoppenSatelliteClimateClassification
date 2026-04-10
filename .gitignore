@@ -7,3 +7,6 @@ model/models
 
 # Reports and training logs
 model/reports
+
+# Generated class counts
+model/class_counts.npy

@@ -3,7 +3,7 @@ import torch.nn as nn
 from torchvision import models
 
 class ClimateCNN(nn.Module):
-    def __init__(self, num_classes=30):
+    def __init__(self, num_classes=30, in_channels=12):
         super(ClimateCNN, self).__init__()
 
         # Using pre-defined ResNet50 CNN architecture
@@ -17,7 +17,14 @@ class ClimateCNN(nn.Module):
             # Scale by 3/12 to keep the mean activation stable
             new_weight = new_weight * (3.0 / 12.0)
 
-        self.model.conv1 = nn.Conv2d(12, 64, kernel_size=7, stride=2, padding=3, bias=False)
+        self.model.conv1 = nn.Conv2d(
+            in_channels=in_channels,
+            out_channels=64,
+            kernel_size=7,
+            stride=2,
+            padding=3,
+            bias=False
+        )
         self.model.conv1.weight.data = new_weight
 
         # Modify full-connected layer for number of output classes and add dropout
