@@ -31,7 +31,10 @@ class ClimateCNN(nn.Module):
         num_features = int(self.model.fc.in_features)
         self.model.fc = nn.Sequential(
             nn.Dropout(p=0.5),
-            nn.Linear(num_features, num_classes)
+            nn.Linear(num_features, 256),
+            nn.LeakyReLU(),
+            nn.Dropout(p=0.3),
+            nn.Linear(256, num_classes)
         )
 
     def forward(self, x):

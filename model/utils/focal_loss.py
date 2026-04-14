@@ -35,10 +35,11 @@ def soft_focal_loss(inputs, target_probs, alpha=None, gamma=2.0):
     alpha: [num_classes] tensor of weights
     """
     log_probs = F.log_softmax(inputs, dim=1)
-    probs = torch.exp(log_probs)
+    probs = F.softmax(inputs, dim=1)
 
     # Calculate focal weights for every class
-    focal_weight = (1 - probs) ** gamma
+    p_t = (target_probs * probs).sum(dim=1, keepdim=True)  # [B, 1]
+    focal_weight = (1 - p_t) ** gamma  # [B, 1]
 
     if alpha is not None:
         loss = -(target_probs * focal_weight * log_probs * alpha).sum(dim=1)

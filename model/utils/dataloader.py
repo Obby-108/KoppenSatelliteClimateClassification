@@ -32,26 +32,25 @@ def _parse_function(example_proto):
 
 
 def load_shards(filenames, batch_size=64, is_training=True, is_svm=False):
-    cores = multiprocessing.cpu_count()
     dataset = tf.data.Dataset.from_tensor_slices(filenames)
 
     dataset = dataset.interleave(
         lambda x: tf.data.TFRecordDataset(x, compression_type='GZIP'),
-        cycle_length=cores,
+        cycle_length=tf.data.AUTOTUNE,
         block_length=16,
-        num_parallel_calls=cores,
+        num_parallel_calls=tf.data.AUTOTUNE,
         deterministic=False
     )
 
-    dataset = dataset.map(_parse_function, num_parallel_calls=cores)
+    dataset = dataset.map(_parse_function, num_parallel_calls=tf.data.AUTOTUNE)
 
     # Statistical reduction for svms
     if is_svm:
-        dataset = dataset.map(calculate_spatial_stats, num_parallel_calls=cores)
+        dataset = dataset.map(calculate_spatial_stats, num_parallel_calls=tf.data.AUTOTUNE)
 
     # Shuffle for training data
     if is_training:
-        dataset = dataset.shuffle(buffer_size=1000)
+        dataset = dataset.shuffle(buffer_size=10000, reshuffle_each_iteration=True)
 
     dataset = dataset.batch(batch_size)
     dataset = dataset.prefetch(buffer_size=tf.data.AUTOTUNE)

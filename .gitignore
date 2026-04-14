@@ -10,3 +10,7 @@ model/reports
 
 # Generated class counts
 model/class_counts.npy
+
+# Cached data
+data
+model/train_stats.npz

@@ -1,7 +1,6 @@
 import multiprocessing
 import tensorflow as tf
 import numpy as np
-from tqdm import tqdm
 
 def _label_parse_function(example_proto):
     feature_description = {
@@ -28,7 +27,7 @@ def get_class_counts(file_list, num_classes=30):
 
     counts = np.zeros(num_classes, dtype=np.int64)
 
-    for batch in tqdm(dataset):
+    for batch in dataset:
         labels = batch.numpy()
         unique, batch_counts = np.unique(labels, return_counts=True)
         counts[unique] += batch_counts

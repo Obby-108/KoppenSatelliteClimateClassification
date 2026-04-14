@@ -7,21 +7,17 @@ class MultispectralJitter(torch.nn.Module):
         self.contrast = contrast
 
     def forward(self, img):
-        # Expects [B, C, H, W] if on GPU after a batch, or [C, H, W]
-        # Generate random factors on the same device as the input image
+        # Expects [B, C, H, W] or [C, H, W]
         device = img.device
-        channels = img.shape[-3]  # Works for both [C,H,W] and [B,C,H,W]
 
-        # Random Brightness (Offset) per channel
-        # Use a small unsqueeze to make broadcasting work: [C, 1, 1]
         b_dims = [1] * img.ndim
-        b_dims[-3] = channels
 
-        brightness_factor = torch.empty(b_dims, device=device).uniform_(-self.brightness, self.brightness)
-        img = img + brightness_factor
-
-        # Random Contrast (Scale) per channel
+        # Generate one contrast factor for all bands
         contrast_factor = torch.empty(b_dims, device=device).uniform_(1 - self.contrast, 1 + self.contrast)
         img = img * contrast_factor
+
+        # Generate one brightness offset for all bands
+        brightness_factor = torch.empty(b_dims, device=device).uniform_(-self.brightness, self.brightness)
+        img = img + brightness_factor
 
         return img
