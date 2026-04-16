@@ -1,5 +1,3 @@
-import multiprocessing
-
 import numpy as np
 import tensorflow as tf
 
@@ -31,7 +29,7 @@ def _parse_function(example_proto):
     return full_tensor, label
 
 
-def load_shards(filenames, batch_size=64, is_training=True, is_svm=False):
+def load_shards(filenames, batch_size=64, is_training=True, flatten=False):
     dataset = tf.data.Dataset.from_tensor_slices(filenames)
 
     dataset = dataset.interleave(
@@ -44,8 +42,8 @@ def load_shards(filenames, batch_size=64, is_training=True, is_svm=False):
 
     dataset = dataset.map(_parse_function, num_parallel_calls=tf.data.AUTOTUNE)
 
-    # Statistical reduction for svms
-    if is_svm:
+    # Statistical reduction for simpler models
+    if flatten:
         dataset = dataset.map(calculate_spatial_stats, num_parallel_calls=tf.data.AUTOTUNE)
 
     # Shuffle for training data
@@ -79,7 +77,7 @@ def calculate_spatial_stats(image, label):
 
     return flat_features, label
 
-def get_svm_data(dataset):
+def get_flat_data(dataset):
     """
     Converts the TF dataset directly into NumPy arrays for scikit-learn.
     """
