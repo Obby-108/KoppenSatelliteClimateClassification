@@ -39,3 +39,47 @@ class ClimateCNN(nn.Module):
 
     def forward(self, x):
         return self.model(x)
+
+class ClimateCNNk3(ClimateCNN):
+    def __init__(self, num_classes=30, in_channels=12):
+        super(ClimateCNNk3, self).__init__(num_classes=num_classes, in_channels=in_channels)
+
+        with torch.no_grad():
+            # ClimateCNN uses [64, 12, 7, 7] weights
+            parent_weights = self.model.conv1.weight.data
+            # Take the center 3x3 slice of the 7x7 weights to seed new layer
+            seed_weight = parent_weights[:, :, 2:5, 2:5]
+
+        # Modify first conv layer (same receptive field, more conv layers)
+        self.model.conv1 = nn.Sequential(
+            nn.Conv2d(
+                in_channels=in_channels,
+                out_channels=64,
+                kernel_size=3,
+                stride=2,
+                padding=1,
+                bias=True
+            ),
+            nn.ReLU(),
+            nn.Conv2d(
+                in_channels=64,
+                out_channels=64,
+                kernel_size=3,
+                stride=1,
+                padding=1,
+                bias=True
+            ),
+            nn.ReLU(),
+            nn.Conv2d(
+                in_channels=64,
+                out_channels=64,
+                kernel_size=3,
+                stride=1,
+                padding=1,
+                bias=False # No bias before BatchNorm
+            )
+        )
+
+        # Apply the seed weights to the first layer of the sequence
+        with torch.no_grad():
+            self.model.conv1[0].weight.copy_(seed_weight)
