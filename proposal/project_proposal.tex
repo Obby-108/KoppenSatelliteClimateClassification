@@ -73,6 +73,7 @@ This collection of architectures will provide a comprehensive basis for comparin
 
 \subsection{SVM}
 \label{subsec:svm-architecture}
+Much preprocessing was necessary in order for the SVM to understand our data, as tensors cannot be passed into SVMs. Moreover, we couldn't just flatten our data, as that would yield 129 x 129 x 12 $\approx$ 200,000 features per sample, a guarantee for overfitting. As we had to transform our data into feature vectors, we decided to apply dimensionality reduction by calculating statistics across the 129 x 129 x 1 patch of land across each spectral band. Specifically, we calculated the mean, lower quartile, median, upper quartile, and maximum wavelength intensities across each pixel of the 129 x 129 x 1 land patches for each of the 12 classes, yielding a total of 60 features per class. This required heavy GPU work, and was done via the \texttt{svm\_loader.ipynb} file, outputting an HDF5-format file, which concatenated the training and testing datasets. From here, training the SVM was a simple matter of passing in the data to the chosen \texttt{NuSVC} model—which limits the number of support vectors—and fitting it on it. We experimented with different kernels, but RBF proved to be the best. As expected, the SVM only achieved 41\% testing accuracy, due to the data being simplified aggressively in order for it to be usable by the SVM.
 
 \subsection{Convolutional Neural Network}
 \label{subsec:cnn-architecture}
@@ -85,6 +86,7 @@ This collection of architectures will provide a comprehensive basis for comparin
 
 \section{Future Work}
 \label{sec:future-work}
+In the future, this project could benefit from various improvements, including exploring benefits from using lighter models such as Gradient Boosted Classifiers and Random Forests, which were covered in \texttt{ensemble.ipynb}. Collecting other types of data, such as time series data, would introduce temporal features that would help our models achieve a more granular understanding of a certain area's climate behavior over different periods of time, rather than just taking a single snapshot of that area from a single season. In addition, the ViT aspect of our project would show the most promising results, as it lacks an inductive bias like with CNNs, so synthesizing vast amounts of new data in the same manner that we did our current data would benefit its immense data needs.
 
 \printbibliography
 
