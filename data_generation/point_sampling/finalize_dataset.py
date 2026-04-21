@@ -1,4 +1,7 @@
-import pandas as pd, json, glob, os
+import glob
+import json
+import os
+import pandas as pd
 
 # config constants
 TARGET_PER_CLASS = 2000

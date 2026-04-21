@@ -1,0 +1,24 @@
+name: climate_project_env
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - pip
+  - numpy
+  - pandas
+  - scikit-learn
+  - tqdm
+  - matplotlib
+  - seaborn
+  - h5py
+  - flatbuffers
+  - ipywidgets
+  - jupyter
+  - pip:
+      - libclang
+      - tensorflow==2.16.1
+      - keras==3.3.3
+      - oauthlib>=3.0.0
+      - urllib3<2.0
+      - earthengine-api

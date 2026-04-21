@@ -1,6 +1,8 @@
 import multiprocessing
-import tensorflow as tf
+
 import numpy as np
+import tensorflow as tf
+
 
 def _label_parse_function(example_proto):
     feature_description = {

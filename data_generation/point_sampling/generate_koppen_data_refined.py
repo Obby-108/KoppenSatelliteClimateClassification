@@ -1,4 +1,6 @@
-import ee, sys, time
+import ee
+import sys
+import time
 
 # initialize
 ee.Authenticate()

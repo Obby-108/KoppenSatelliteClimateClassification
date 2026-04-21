@@ -1,10 +1,11 @@
 import os
 
-import torch
 import matplotlib.pyplot as plt
-from sklearn.metrics import classification_report, confusion_matrix
-import seaborn as sns
 import numpy as np
+import seaborn as sns
+import torch
+from sklearn.metrics import classification_report, confusion_matrix
+
 
 def plot_per_class_f1(model, fold, dirname, test_loader, val_gpu_transforms):
     model.eval()

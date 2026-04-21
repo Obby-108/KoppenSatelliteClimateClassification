@@ -1,6 +1,8 @@
 import os
 import shutil
+
 from tqdm.auto import tqdm
+
 
 def cache_shards_locally(file_list, local_dir='../data'):
     os.makedirs(local_dir, exist_ok=True)

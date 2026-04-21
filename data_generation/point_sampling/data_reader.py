@@ -1,5 +1,4 @@
 import pandas as pd
-from collections import Counter
 
 # grab data
 prelim_data = pd.read_csv('/Users/abhicado/Coding Projects/grad_ml/final_project/primary_koppen_dataset.csv')
