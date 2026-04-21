@@ -31,6 +31,7 @@ class FocalLoss(nn.Module):
 def soft_focal_loss(inputs, target_probs, alpha=None, gamma=2.0):
     """
     Weighted Focal Loss for soft targets (Mix-up).
+
     target_probs: [batch_size, num_classes] one-hot/soft labels
     alpha: [num_classes] tensor of weights
     """
