@@ -3,9 +3,9 @@
 ---
 
 This repository contains the main source code for the Köppen-Geiger Sentinel-2 Satellite Climate Classification final project for CS 6140: Machine Learning.
-Before setting up the project, make sure you have downloaded the dataset [here](https://northeastern-my.sharepoint.com/:f:/r/personal/salchert_b_northeastern_edu/Documents/cs6140_climate_project_data?csf=1&web=1&e=r2y4k5).
-
+Before setting up the project, make sure you have downloaded the dataset [here](https://northeastern-my.sharepoint.com/:f:/r/personal/salchert_b_northeastern_edu/Documents/cs6140_climate_project_data?csf=1&web=1&e=r2y4k5) and extracted the downloaded zip file.
 To ensure the project sees the dataset, please make sure that the dataset folder is named `data` and is located inside the project root directory.
+Be aware that extracting the zip file sometimes creates a subfolder of the same name.
 The relative filepath should look like this:
 
 `KoppenSatelliteClimateClassification/data`
@@ -13,8 +13,9 @@ The relative filepath should look like this:
 Within the `/data` directory should be all the `*.tfrecord.gz` files.
 There should not be any subdirectories.
 
-If you prefer to test the CNN and ViT models without training them yourself, you can download the pre-trained models [here](https://northeastern-my.sharepoint.com/:f:/r/personal/salchert_b_northeastern_edu/Documents/final_models?csf=1&web=1&e=SCwgDR).
+If you prefer to test the CNN and ViT models without training them yourself, you can download the pre-trained models [here](https://northeastern-my.sharepoint.com/:f:/r/personal/salchert_b_northeastern_edu/Documents/final_models?csf=1&web=1&e=SCwgDR) and extract the downloaded zip file.
 To make sure these files work with the project structure, please put the folder named `final_models` inside of the `/model` directory in the project root.
+Be aware that extracting the zip file sometimes creates a subfolder of the same name.
 The relative filepath should look like this:
 
 `KoppenSatelliteClimateClassification/model/final_models`
