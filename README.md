@@ -25,7 +25,7 @@ We recommend using PyCharm as your IDE for running the project, though any IDE s
 Open your terminal and navigate to the project root directory.
 Then, run
 
-`conda create env -f environment.yml`
+`conda create env --file environment.yml`
 
 to create the Conda environment for the project.
 
