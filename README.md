@@ -10,6 +10,9 @@ The relative filepath should look like this:
 
 `KoppenSatelliteClimateClassification\data`
 
+Within the `\data` directory should be all the `*.tfrecord.gz` files.
+There should not be any subdirectories.
+
 # Setup
 
 ---
