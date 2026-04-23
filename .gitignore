@@ -4,6 +4,7 @@ out
 
 # Saved model parameters
 model/models
+model/final_models
 
 # Reports and training logs
 model/reports

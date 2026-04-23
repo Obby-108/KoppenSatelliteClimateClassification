@@ -8,9 +8,18 @@ Before setting up the project, make sure you have downloaded the dataset [here](
 To ensure the project sees the dataset, please make sure that the dataset folder is named `data` and is located inside the project root directory.
 The relative filepath should look like this:
 
-`KoppenSatelliteClimateClassification\data`
+`KoppenSatelliteClimateClassification/data`
 
-Within the `\data` directory should be all the `*.tfrecord.gz` files.
+Within the `/data` directory should be all the `*.tfrecord.gz` files.
+There should not be any subdirectories.
+
+If you prefer to test the CNN and ViT models without training them yourself, you can download the pre-trained models [here](https://northeastern-my.sharepoint.com/:f:/r/personal/salchert_b_northeastern_edu/Documents/final_models?csf=1&web=1&e=SCwgDR).
+To make sure these files work with the project structure, please put the folder named `final_models` inside of the `/model` directory in the project root.
+The relative filepath should look like this:
+
+`KoppenSatelliteClimateClassification/model/final_models`
+
+Within the `/final_models` directory should be the `cnn_checkpoint.pth` and `transformer_checkpoint.pth` files.
 There should not be any subdirectories.
 
 # Setup
@@ -50,6 +59,8 @@ The project is now ready to run!
 # Usage
 
 ---
+
+Before proceeding, please ensure that you have downloaded both the dataset and the pre-trained models from the [Introduction](#Introduction) section and placed them in the proper locations within the directory structure.
 
 Once the project is set up, open up the `/model` directory.
 This is where all the Jupyter Notebook scripts are contained.
@@ -96,3 +107,6 @@ Note that you may need to reduce the batch size depending on how much VRAM is av
 The training script will automatically generate the `\models` and `\reports` directories for storing the output of this script.
 The `\models` directory contains checkpoints for the model parameters saved during training as well as the final model weights.
 The `\reports` directory contains plots for training/validation loss, training/validation accuracy, and testing F1-score for each fold of training, as well as validation confusion matrices for each epoch in each fold.
+
+If you would like to skip training the models yourself to save time, running `test.ipynb` will execute the testing script for both the CNN and the ViT.
+Please ensure that you have downloaded both the dataset and the pre-trained models from the [Introduction](#Introduction) section and placed them in the proper locations within the directory structure.
