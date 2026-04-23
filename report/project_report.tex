@@ -7,6 +7,8 @@
 \usepackage{float}
 \usepackage{listings}
 \usepackage{subcaption}
+\usepackage{titling}
+\setlength{\droptitle}{-4em}
 \usepackage[font=small,labelfont=bf]{caption}
 
 % Settings for equation formatting
@@ -32,11 +34,14 @@
 
 \author{Abhijit Goda, Brian Salchert}
 
-\date{}
+\date{24 April 2026}
 
 \begin{document}
 
 \maketitle
+
+\centering
+Project GitHub Repository: \url{https://github.com/Obby-108/KoppenSatelliteClimateClassification}
 
 \abstract
 
@@ -280,8 +285,8 @@ Figure~\ref{fig:swin-results} below shows the final plots for the best fold.
   \caption{Swin Transformer Training and Evaluation Results (Epoch 30).}
   \label{fig:swin-results}
 \end{figure}
-% TODO: Run K-Fold CV and Report Scores
-The Swin Transformer achieved a final validation accuracy of about [INSERT SCORE HERE], with the mean F1-score falling at about [INSERT SCORE HERE].
+
+The Swin Transformer achieved a final validation accuracy of about 53.4\%, with the mean F1-score falling at about 53\%.
 The strong diagonal on the confusion matrix also appears comparable to that of the CNN model.
 
 \section{Discussion (Results \& Analysis)}

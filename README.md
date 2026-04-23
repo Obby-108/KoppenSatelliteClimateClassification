@@ -80,8 +80,8 @@ models = run_kfold(
     k=5,
     batch_size=256,
     lr=1e-4,
-    weight_decay=0.05,
-    num_epochs=epochs
+    weight_decay=1.0,
+    num_epochs=30
 )
 ```
 
