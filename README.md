@@ -37,6 +37,9 @@ PyTorch can create some conflicts when included in the `environment.yml` file, s
 
 `pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124`
 
+Please note that you may need to change the CUDA version in the index URL above depending on your machine's GPU compatibility requirements.
+For instance, NVIDIA 50 series GPUs require CUDA version 12.8 or newer, meaning that the above URL should end with `cu128` instead of `cu124`.
+
 At this point, the environment setup is complete.
 If you are using PyCharm, navigate to Settings → Python → Interpreter and add a new local interpreter.
 Choose "Select existing", select the type as "Conda", and then select `climate_project_env` as the environment.
